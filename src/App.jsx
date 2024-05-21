@@ -2,30 +2,46 @@ import { useEffect } from "react";
 import "./App.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  jobsAtom,
-  messagingAtom,
-  networkAtom,
+  // jobsAtom,
+  // messagingAtom,
+  // networkAtom,
   notificationsAtom,
-  sumSelector,
+  // sumSelector,
+  totalNotificationsSelector,
 } from "./store/atoms/atoms";
 import axios from "axios";
 
 function App() {
-  const networkCount = useRecoilValue(networkAtom);
-  const jobscount = useRecoilValue(jobsAtom);
-  const [messagingCount, setMessagingCount] = useRecoilState(messagingAtom);
-  const notificationsCount = useRecoilValue(notificationsAtom);
-  const totalSum = useRecoilValue(sumSelector);
+  const [notification, setNotification] = useRecoilState(notificationsAtom);
+  const totalNotifications = useRecoilValue(totalNotificationsSelector);
+  // const networkCount = useRecoilValue(networkAtom);
+  // const jobscount = useRecoilValue(jobsAtom);
+  // const [messagingCount, setMessagingCount] = useRecoilState(messagingAtom);
+  // const notificationsCount = useRecoilValue(notificationsAtom);
+  // const totalSum = useRecoilValue(sumSelector);
 
-  // useEffect(() => {
-  //   axios.get("https://sum-server.100xdevs.com/notifications").then((res) => {
-  //     setMessagingCount(res?.data?.me);
-  //   });
-  // }, []);
+  //Now dynamic data
+  useEffect(() => {
+    axios.get("https://sum-server.100xdevs.com/notifications").then((res) => {
+      setNotification(res.data);
+    });
+  }, []);
 
   return (
     <div>
       <button>Home</button>
+      <button>
+        My Network ({notification.network > 100 ? "99+" : notification.network})
+      </button>
+      <button>Jobs ({notification.jobs})</button>
+      <button>Messaging ({notification.messaging})</button>
+      <button>
+        Notifications (
+        {notification.notifications > 100 ? "99+" : notification.notifications})
+      </button>
+
+      <button>Me ({totalNotifications})</button>
+      {/* <button>Home</button>
       <button>My Network ({networkCount > 100 ? "99+" : networkCount})</button>
       <button>Jobs ({jobscount})</button>
       <button>Messaging ({messagingCount})</button>
@@ -39,7 +55,7 @@ function App() {
         }}
       >
         Me ({totalSum})
-      </button>
+      </button> */}
     </div>
   );
 }
