@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import axios from "axios";
 
 // export const networkAtom = atom({
 //   key: "networkAtom",
@@ -14,9 +15,25 @@ import { atom, selector } from "recoil";
 //   default: 0,
 // });
 
+//Should call the api inside the atom only
+// export const notificationsAtom = atom({
+//   key: "notificationsAtom",
+//   default: { network: 0, jobs: 0, messaging: 0, notifications: 0 },
+// });
+
+//Asynchronous Data Queries
 export const notificationsAtom = atom({
-  key: "notificationsAtom",
-  default: { network: 0, jobs: 0, messaging: 0, notifications: 0 },
+  key: "notificationAtom",
+  default: selector({
+    key: "apiData",
+    get: async () => {
+      await new Promise((r) => setTimeout(r, 5000)); //sleeps for 5 sec
+      const res = await axios.get(
+        "https://sum-server.100xdevs.com/notifications"
+      );
+      return res.data;
+    },
+  }),
 });
 
 export const totalNotificationsSelector = selector({

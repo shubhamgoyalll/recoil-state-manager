@@ -9,7 +9,6 @@ import {
   // sumSelector,
   totalNotificationsSelector,
 } from "./store/atoms/atoms";
-import axios from "axios";
 
 function App() {
   const [notification, setNotification] = useRecoilState(notificationsAtom);
@@ -20,12 +19,12 @@ function App() {
   // const notificationsCount = useRecoilValue(notificationsAtom);
   // const totalSum = useRecoilValue(sumSelector);
 
-  //Now dynamic data
-  useEffect(() => {
-    axios.get("https://sum-server.100xdevs.com/notifications").then((res) => {
-      setNotification(res.data);
-    });
-  }, []);
+  //Now dynamic data but not good to use it here
+  // useEffect(() => {
+  //   axios.get("https://sum-server.100xdevs.com/notifications").then((res) => {
+  //     setNotification(res.data);
+  //   });
+  // }, []);
 
   return (
     <div>
